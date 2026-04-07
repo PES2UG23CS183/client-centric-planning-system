@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Dashboard – Client Planning System</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<nav class="navbar">
+  <a href="/dashboard" class="navbar-brand"><span class="brand-dot"></span>ClientPlanning</a>
+  <ul class="navbar-nav">
+    <li><a href="/dashboard" class="active">Dashboard</a></li>
+    <li><a href="/users">Users</a></li>
+    <li><a href="/profiles">Profiles</a></li>
+    <li><a href="/plans">Plans</a></li>
+    <li><a href="/risks">Risks</a></li>
+    <li><a href="/alignment">Alignment</a></li>
+    <li><a href="/history">History</a></li>
+  </ul>
+  <div class="navbar-user">
+    <div class="avatar" th:text="${#strings.substring(user.name,0,1)}">U</div>
+    <span th:text="${user.name}">User</span>
+    <a href="/logout" class="btn btn-secondary btn-sm">Logout</a>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <a href="/dashboard" class="sidebar-link active">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard
+      </a>
+      <a href="/users" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Users
+      </a>
+      <a href="/users/clients" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Clients
+      </a>
+      <a href="/users/analysts" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg>Analysts
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Planning</div>
+      <a href="/profiles" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>Profiles
+      </a>
+      <a href="/plans" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Plans
+      </a>
+      <a href="/risks" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Risks
+      </a>
+      <a href="/alignment" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Alignment
+      </a>
+      <a href="/history" class="sidebar-link">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>History
+      </a>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Welcome back, <span class="text-accent" th:text="${user.name}">User</span></h1>
+      <p class="page-subtitle">Here's what's happening in your planning system today.</p>
+    </div>
+    <div style="margin-bottom:2rem;">
+      <span class="badge badge-accent" th:text="${user.role}">ROLE</span>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-value" th:text="${totalUsers}">0</div><div class="stat-label">Total Users</div></div>
+      <div class="stat-card"><div class="stat-value" th:text="${totalClients}">0</div><div class="stat-label">Clients</div></div>
+      <div class="stat-card"><div class="stat-value" th:text="${totalAnalysts}">0</div><div class="stat-label">Analysts</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--accent2);">Live</div><div class="stat-label">System Status</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2 class="card-title">Quick Actions</h2></div>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;">
+        <a href="/register" class="btn btn-secondary">+ Add User</a>
+        <a href="/profiles/new" class="btn btn-secondary">+ New Profile</a>
+        <a href="/plans" class="btn btn-secondary">View Plans</a>
+        <a href="/risks" class="btn btn-secondary">View Risks</a>
+        <a href="/alignment" class="btn btn-secondary">Alignment Scores</a>
+        <a href="/history" class="btn btn-secondary">History</a>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
