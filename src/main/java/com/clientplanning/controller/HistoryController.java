@@ -9,7 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+/**
+ * ESHWAR (PES2UG23CS188)
+ * Handles all /history routes
+ */
 @Controller
 @RequestMapping("/history")
 public class HistoryController {

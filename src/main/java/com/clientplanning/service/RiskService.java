@@ -8,6 +8,23 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ESHWAR (PES2UG23CS188)
+ *
+ * GRASP Principle Applied: Low Coupling
+ *   RiskService only depends on RiskRepository and ProjectPlanRepository.
+ *   It has no dependency on UserService, ClientProfileService, or
+ *   AlignmentService. This low coupling means changes in other modules
+ *   do not affect this class, making it independently testable and
+ *   maintainable.
+ *
+ * Design Pattern Applied: Factory Method
+ *   The private makeRisk() method is a Factory Method. Instead of
+ *   creating Risk objects scattered across multiple methods with
+ *   repeated field-setting code, all Risk creation is centralised
+ *   in one factory method. Every risk — whether auto-flagged or
+ *   manually added — is created through this single factory.
+ */
 @Service
 public class RiskService {
 

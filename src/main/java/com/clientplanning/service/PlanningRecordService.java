@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * ESHWAR (PES2UG23CS188)
+ * Manages versioned planning records — stores and retrieves plan snapshots.
+ */
 @Service
 public class PlanningRecordService {
 
