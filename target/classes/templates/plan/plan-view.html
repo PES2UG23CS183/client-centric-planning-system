@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>View Plan</title><link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<nav class="navbar">
+  <a href="/dashboard" class="navbar-brand"><span class="brand-dot"></span>ClientPlanning</a>
+  <ul class="navbar-nav">
+    <li><a href="/dashboard">Dashboard</a></li><li><a href="/users">Users</a></li>
+    <li><a href="/profiles">Profiles</a></li><li><a href="/plans" class="active">Plans</a></li>
+    <li><a href="/risks">Risks</a></li><li><a href="/alignment">Alignment</a></li><li><a href="/history">History</a></li>
+  </ul>
+  <div class="navbar-user"><div class="avatar" th:text="${#strings.substring(user.name,0,1)}">U</div><a href="/logout" class="btn btn-secondary btn-sm">Logout</a></div>
+</nav>
+<div class="page-wrapper">
+  <div class="page-header flex-between">
+    <div>
+      <h1 class="page-title" th:text="'Plan — '+${plan.clientProfile.client.user.name}"></h1>
+      <p class="page-subtitle" th:text="'Methodology: '+${plan.methodology}"></p>
+    </div>
+    <div style="display:flex;gap:0.75rem;align-items:center;">
+      <span class="badge badge-accent" th:text="${plan.status}"></span>
+      <a th:href="@{/risks/plan/{id}(id=${plan.planId})}" class="btn btn-secondary">View Risks</a>
+      <a th:href="@{/alignment/plan/{id}(id=${plan.planId})}" class="btn btn-secondary">Alignment Score</a>
+    </div>
+  </div>
+  <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;">
+    <div class="card">
+      <div class="card-header"><h2 class="card-title">Plan Details</h2></div>
+      <table style="width:100%;font-size:0.875rem;">
+        <tr><td style="color:var(--text-muted);padding:0.5rem 0;width:40%;">Methodology</td><td th:text="${plan.methodology}"></td></tr>
+        <tr><td style="color:var(--text-muted);padding:0.5rem 0;">Timeline</td><td th:text="${plan.timeline}"></td></tr>
+        <tr><td style="color:var(--text-muted);padding:0.5rem 0;">Execution Strategy</td><td th:text="${plan.executionStrategy}"></td></tr>
+        <tr><td style="color:var(--text-muted);padding:0.5rem 0;">Review Frequency</td><td th:text="${plan.recommendedReviewFrequency}"></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2 class="card-title">Update Status</h2></div>
+      <form th:action="@{/plans/{id}/status(id=${plan.planId})}" method="post">
+        <div class="form-group">
+          <label class="form-label">Current Status</label>
+          <select name="status" class="form-select">
+            <option value="DRAFT"        th:selected="${plan.status.name()=='DRAFT'}">Draft</option>
+            <option value="GENERATED"    th:selected="${plan.status.name()=='GENERATED'}">Generated</option>
+            <option value="UNDER_REVIEW" th:selected="${plan.status.name()=='UNDER_REVIEW'}">Under Review</option>
+            <option value="FINALIZED"    th:selected="${plan.status.name()=='FINALIZED'}">Finalized</option>
+            <option value="APPROVED"     th:selected="${plan.status.name()=='APPROVED'}">Approved</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+      </form>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-header"><h2 class="card-title">Project Phases</h2></div>
+    <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+      <span th:each="phase,stat : ${#strings.arraySplit(plan.phases,',')}"
+            class="badge badge-accent"
+            th:text="${stat.index+1}+'. '+${#strings.trim(phase)}"></span>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-header"><h2 class="card-title">Decision Analysis</h2></div>
+    <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;" th:text="${plan.decisionSummary}"></p>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2 class="card-title">Identified Conflicts</h2></div>
+    <div th:if="${plan.conflicts!=null and plan.conflicts!='No major conflicts detected.'}">
+      <div th:each="conflict : ${#strings.arraySplit(plan.conflicts,'|')}"
+           class="alert alert-warning" style="margin-bottom:0.75rem;"
+           th:text="${#strings.trim(conflict)}"></div>
+    </div>
+    <div th:if="${plan.conflicts==null or plan.conflicts=='No major conflicts detected.'}">
+      <p class="alert alert-success">No major conflicts detected.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

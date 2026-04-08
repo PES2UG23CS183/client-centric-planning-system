@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head><meta charset="UTF-8"/><title>Planning History</title><link rel="stylesheet" th:href="@{/css/style.css}"/></head>
+<body>
+<nav class="navbar">
+  <a href="/dashboard" class="navbar-brand"><span class="brand-dot"></span>ClientPlanning</a>
+  <ul class="navbar-nav">
+    <li><a href="/dashboard">Dashboard</a></li><li><a href="/users">Users</a></li>
+    <li><a href="/profiles">Profiles</a></li><li><a href="/plans">Plans</a></li>
+    <li><a href="/risks">Risks</a></li><li><a href="/alignment">Alignment</a></li><li><a href="/history" class="active">History</a></li>
+  </ul>
+  <div class="navbar-user"><div class="avatar" th:text="${#strings.substring(user.name,0,1)}">U</div><a href="/logout" class="btn btn-secondary btn-sm">Logout</a></div>
+</nav>
+<div class="page-wrapper">
+  <div class="page-header"><h1 class="page-title">Planning History</h1><p class="page-subtitle">All saved plan snapshots across every project.</p></div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Date</th><th>Client</th><th>Version</th><th>Summary</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr th:each="r : ${records}">
+          <td th:text="${r.date}"></td>
+          <td th:text="${r.projectPlan.clientProfile.client.user.name}"></td>
+          <td><span class="badge badge-accent" th:text="'v'+${r.version}"></span></td>
+          <td style="max-width:300px;font-size:0.8rem;color:var(--text-muted);" th:text="${#strings.abbreviate(r.summary,80)}"></td>
+          <td>
+            <div style="display:flex;gap:0.5rem;">
+              <a th:href="@{/history/plan/{id}(id=${r.projectPlan.planId})}" class="btn btn-secondary btn-sm">Plan History</a>
+              <form th:action="@{/history/delete/{id}(id=${r.recordId})}" method="post" onsubmit="return confirm('Delete?');">
+                <input type="hidden" name="planId" th:value="${r.projectPlan.planId}"/>
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(records)}"><td colspan="5" style="text-align:center;color:var(--text-muted);padding:3rem;">No history yet. Calculate an alignment score to save a record.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
